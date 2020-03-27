@@ -48,4 +48,42 @@ describe("dogsModel.js", function() {
             })
         })
     })
+
+    describe("remove function", function () {
+        it("should return 200 okay", async function() {
+            const newDog = {
+                name: "test name",
+                breed: "test breed"
+            }
+
+            const insertResponse = await request(server)
+                                  .post("/api/dogs")
+                                  .send(newDog)
+                            
+            const deleteResponse = await request(server)
+                            .delete(`/api/dogs/${insertResponse.body.id}`)
+
+            expect(deleteResponse.status).toBe(200);
+        })
+    })
+
+    it("should return deleted object", async function() {
+        const newDog = {
+            name: "test name",
+            breed: "test breed"
+        }
+
+        const insertResponse = await request(server)
+                              .post("/api/dogs")
+                              .send(newDog)
+                        
+        const deleteResponse = await request(server)
+                        .delete(`/api/dogs/${insertResponse.body.id}`)
+
+        expect(deleteResponse.body).toStrictEqual({
+            id: insertResponse.body.id,
+            name: "test name",
+            breed: "test breed"
+        })
+    })
 })
