@@ -20,6 +20,16 @@ server.get("/api/dogs", (req, res) => {
     });
 });
 
+server.get("/api/dogs/:id", (req, res) => {
+    Dogs.getById(req.params.id)
+      .then(dogs => {
+        res.status(200).json(dogs);
+      })
+      .catch(error => {
+        res.status(500).json(error);
+      });
+});
+
 server.post("/api/dogs", (req, res) => {
     Dogs.insert(req.body)
     .then(response => {

@@ -65,25 +65,60 @@ describe("dogsModel.js", function() {
 
             expect(deleteResponse.status).toBe(200);
         })
+
+        it("should return deleted object", async function() {
+            const newDog = {
+                name: "test name",
+                breed: "test breed"
+            }
+    
+            const insertResponse = await request(server)
+                                  .post("/api/dogs")
+                                  .send(newDog)
+                            
+            const deleteResponse = await request(server)
+                            .delete(`/api/dogs/${insertResponse.body.id}`)
+    
+            expect(deleteResponse.body).toStrictEqual({
+                id: insertResponse.body.id,
+                name: "test name",
+                breed: "test breed"
+            })
+        })
     })
 
-    it("should return deleted object", async function() {
-        const newDog = {
-            name: "test name",
-            breed: "test breed"
-        }
+    describe("getById function tests", function() {
+        it("function returns 200", async function() {
+            const newDog = {
+                name: "test name",
+                breed: "test breed"
+            }
 
-        const insertResponse = await request(server)
-                              .post("/api/dogs")
-                              .send(newDog)
-                        
-        const deleteResponse = await request(server)
-                        .delete(`/api/dogs/${insertResponse.body.id}`)
+            const insertResponse = await request(server)
+                                  .post("/api/dogs")
+                                  .send(newDog)
 
-        expect(deleteResponse.body).toStrictEqual({
-            id: insertResponse.body.id,
-            name: "test name",
-            breed: "test breed"
+            const getResponse = await request(server)
+                                .get(`/api/dogs/${insertResponse.body.id}`)
+
+            expect(getResponse.status).toBe(200);
+        })
+
+        it("function returns correct object", async function() {
+            const newDog = {
+                name: "test name",
+                breed: "test breed"
+            }
+
+            const insertResponse = await request(server)
+                                  .post("/api/dogs")
+                                  .send(newDog)
+
+            const getResponse = await request(server)
+                                .get(`/api/dogs/${insertResponse.body.id}`)
+
+            expect(getResponse.body).toStrictEqual(insertResponse.body);
         })
     })
 })
+
