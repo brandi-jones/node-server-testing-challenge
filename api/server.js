@@ -10,7 +10,7 @@ server.get("/", (req, res) => {
   res.status(200).json({ api: "up" });
 });
 
-server.get("/dogs", (req, res) => {
+server.get("/api/dogs", (req, res) => {
   Dogs.get()
     .then(dogs => {
       res.status(200).json(dogs);
@@ -19,5 +19,25 @@ server.get("/dogs", (req, res) => {
       res.status(500).json(error);
     });
 });
+
+server.post("/api/dogs", (req, res) => {
+    Dogs.insert(req.body)
+    .then(response => {
+        res.status(200).json(response);
+    })
+    .catch(error => {
+        res.status(500).json(error);
+    })
+})
+
+server.delete("/api/dogs/:id", (req, res) => {
+    Dogs.remove(req.params.id)
+    .then(response => {
+        res.status(200).json(response);
+    })
+    .catch(error => {
+        res.status(500).json(error);
+    })
+})
 
 module.exports = server;
