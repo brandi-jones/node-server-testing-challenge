@@ -23,7 +23,7 @@ server.get("/api/dogs", (req, res) => {
 server.post("/api/dogs", (req, res) => {
     Dogs.insert(req.body)
     .then(response => {
-        res.status(200).json(response);
+        res.status(201).json(response);
     })
     .catch(error => {
         res.status(500).json(error);
